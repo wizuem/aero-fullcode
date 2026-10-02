@@ -290,7 +290,7 @@ export default function BrowserView({ initialUrl }: BrowserViewProps) {
       <div className="flex-1 relative overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
         {!activeTab.url ? (
           <div className="flex flex-col items-center justify-center h-full gap-6">
-            <img src="/aero.svg" alt="aero." className="w-20 h-20 object-contain rounded-2xl opacity-90" />
+            <img src="/image copy 2.png" alt="aero." className="w-20 h-20 object-contain rounded-2xl opacity-90" />
             <form
               onSubmit={handleUrlSubmit}
               className="w-full max-w-lg flex items-center gap-2 px-4 py-3 rounded-2xl"
