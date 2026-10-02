@@ -25,7 +25,7 @@ function normalizeUrl(input: string): string {
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
   if (/^[\w.-]+\.[a-z]{2,}/i.test(trimmed)) return `https://${trimmed}`;
   // Treat as search query
-  return `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`;
+  return `https://html.duckduckgo.com/html/?q=${encodeURIComponent(trimmed)}`;
 }
 
 export default function BrowserView({ initialUrl }: BrowserViewProps) {
