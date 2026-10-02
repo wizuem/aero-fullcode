@@ -1,7 +1,3 @@
-/*
-  Cross-origin loading is required for Scramjet's public worker and transport assets.
-  The assets contain no private data.
-
 /scram/*
   Access-Control-Allow-Origin: *
   Cross-Origin-Resource-Policy: cross-origin
