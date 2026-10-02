@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">aero.</title>
+  <desc id="desc">A blue and white aero mark on a transparent background.</desc>
+  <defs>
+    <linearGradient id="blue" x1="72" y1="58" x2="420" y2="456" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#eaf7ff"/>
+      <stop offset="0.45" stop-color="#9ed7ff"/>
+      <stop offset="1" stop-color="#2d8cff"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="none" stroke="url(#blue)" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <path d="M92 270C131 142 242 71 421 56" stroke-width="42"/>
+    <path d="M109 329C168 231 269 177 421 162" stroke-width="42"/>
+    <path d="M122 407c45-65 106-102 183-112" stroke-width="42"/>
+  </g>
+  <g fill="url(#blue)" stroke="#2d8cff" stroke-width="5">
+    <path d="m224 242 54-54 54 54-54 54z"/>
+    <path d="m326 242 54-54 54 54-54 54z"/>
+    <path d="m224 344 54-54 54 54-54 54z"/>
+    <path d="m326 344 54-54 54 54-54 54z"/>
+  </g>
+</svg>
