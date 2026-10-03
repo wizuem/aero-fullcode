@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GamepadIcon, Grid3X3 } from 'lucide-react';
+import { encodeUrl, initScramjet } from '@/lib/scramjet';
 
 interface EmbeddedGame {
   name: string;
@@ -17,6 +18,11 @@ const EMBEDDED_GAMES: EmbeddedGame[] = [
 
 export default function GamesView() {
   const [activeGame, setActiveGame] = useState<EmbeddedGame>(EMBEDDED_GAMES[0]);
+  const [proxyReady, setProxyReady] = useState(false);
+
+  useEffect(() => {
+    initScramjet().then(() => setProxyReady(true)).catch(() => setProxyReady(false));
+  }, []);
 
   return (
     <div className="h-full overflow-y-auto p-6 animate-fade-in" style={{ background: 'var(--bg-primary)' }}>
@@ -38,7 +44,7 @@ export default function GamesView() {
 
         <section className="overflow-hidden rounded-2xl" style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
           <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}><Grid3X3 size={17} style={{ color: activeGame.accent }} /><div><h2 className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{activeGame.name}</h2><p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{activeGame.description}</p></div></div>
-          <iframe key={activeGame.url} src={activeGame.url} title={`${activeGame.name} games`} className="w-full h-[min(72vh,760px)] border-0 bg-white" allow="fullscreen; autoplay; gamepad" referrerPolicy="strict-origin-when-cross-origin" />
+          <iframe key={`${activeGame.url}-${proxyReady}`} src={proxyReady ? encodeUrl(activeGame.url) : ''} title={`${activeGame.name} games`} className="w-full h-[min(72vh,760px)] border-0 bg-white" allow="fullscreen; autoplay; gamepad" referrerPolicy="strict-origin-when-cross-origin" />
         </section>
       </div>
     </div>

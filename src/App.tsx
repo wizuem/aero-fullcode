@@ -3,6 +3,7 @@ import { Menu, Home, Globe, MessageSquare, Settings, Film, GamepadIcon, Github }
 import type { Session } from '@supabase/supabase-js';
 import type { ViewId, Theme, AccentColor } from '@/types';
 import { supabase } from '@/lib/supabase';
+import { initScramjet } from '@/lib/scramjet';
 import Sidebar from '@/components/Sidebar';
 import HomeView from '@/components/HomeView';
 import BrowserView from '@/components/BrowserView';
@@ -29,6 +30,11 @@ export default function App() {
   const [accent, setAccent] = useState<AccentColor>('blue');
   const [user, setUser] = useState<AppUser | null>(null);
   const [browserTarget, setBrowserTarget] = useState<string | undefined>();
+  const [proxyStarting, setProxyStarting] = useState(true);
+
+  useEffect(() => {
+    initScramjet().catch(() => undefined).finally(() => setProxyStarting(false));
+  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -96,6 +102,16 @@ export default function App() {
     { id: 'jsdelivr' as ViewId, label: 'GitHub Links', icon: Github },
     { id: 'settings' as ViewId, label: 'Settings', icon: Settings },
   ];
+
+  if (proxyStarting) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-8" style={{ background: 'var(--bg-primary)' }}>
+        <img src="/winded.png" alt="WINDED devs" className="w-72 max-w-[75vw] h-auto object-contain animate-pulse" />
+        <div className="text-center"><p className="text-xl font-semibold tracking-[0.25em]" style={{ color: 'var(--text-primary)' }}>WINDED devs</p><p className="mt-2 text-sm" style={{ color: 'var(--text-secondary)' }}>Starting secure proxy...</p></div>
+        <div className="h-1 w-44 overflow-hidden rounded-full" style={{ background: 'var(--bg-tertiary)' }}><div className="h-full w-1/2 animate-pulse rounded-full" style={{ background: 'var(--accent)' }} /></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
