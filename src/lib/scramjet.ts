@@ -40,9 +40,9 @@ async function doInit(): Promise<void> {
   const controller = new ScramjetController({
     prefix: '/service/',
     files: {
-      wasm: '/scram/scramjet.wasm.wasm',
-      all: '/scram/scramjet.all.js',
-      sync: '/scram/scramjet.sync.js',
+      wasm: '/scram/scramjet.bundle.js',
+      all: '/scram/scramjet.bundle.js',
+      sync: '/scram/scramjet.bundle.js',
     },
   });
 
