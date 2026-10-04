@@ -140,16 +140,16 @@ function serveIndex(res) {
   const indexPath = join(publicDir, 'index.html');
   readFile(indexPath).then(data => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+    res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
     res.end(data);
   }).catch(() => serve404(res));
 }
 
 const server = createServer((req, res) => {
-  // Set COOP/COEP headers for SharedArrayBuffer support (required by Scramjet)
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
 
   const reqOrigin = req.headers.origin || '';
   const corsHeaders = getCorsHeaders(reqOrigin);

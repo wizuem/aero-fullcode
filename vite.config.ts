@@ -51,8 +51,6 @@ function serveScramjetAssets(): Plugin {
             if (existsSync(filePath)) {
               const ext = extname(filePath).toLowerCase();
               res.setHeader('Content-Type', mimeTypes[ext] || 'application/octet-stream');
-              res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-              res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
               res.setHeader('Access-Control-Allow-Origin', '*');
               res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
               try {

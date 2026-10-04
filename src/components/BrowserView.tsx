@@ -34,7 +34,7 @@ export default function BrowserView({ initialUrl }: BrowserViewProps) {
   const [urlInput, setUrlInput] = useState('');
   const [scramjetReady, setScramjetReady] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
-  const [proxyMode, setProxyMode] = useState<'proxy' | 'direct'>('proxy');
+  const [proxyMode, setProxyMode] = useState<'proxy' | 'direct'>('direct');
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -43,7 +43,7 @@ export default function BrowserView({ initialUrl }: BrowserViewProps) {
   useEffect(() => {
     initScramjet()
       .then(() => setScramjetReady(true))
-      .catch((err) => setInitError(err instanceof Error ? err.message : String(err)));
+      .catch(() => undefined);
   }, []);
 
   const updateTab = useCallback((id: string, updates: Partial<Tab>) => {

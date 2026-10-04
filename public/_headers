@@ -1,7 +1,6 @@
-/*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
-  X-Content-Type-Options: nosniff
+X-Content-Type-Options: nosniff
+Cross-Origin-Embedder-Policy: unsafe-none
+Cross-Origin-Opener-Policy: unsafe-none
 
 /scram/*
   Access-Control-Allow-Origin: *
