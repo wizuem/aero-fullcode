@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>aero.</title>
     <meta name="description" content="aero. — a modern browser with proxy, chat, games, and more" />
-    <!-- BareMux must load first, then transport, then Scramjet bundle -->
+    <!-- Proxy assets must load before the app starts. -->
     <script src="/baremux/index.js"></script>
+    <script src="/scram/scramjet.codecs.js"></script>
     <script src="/scram/scramjet.bundle.js"></script>
     <meta property="og:type" content="website">
     <meta property="og:title" content="aero.">

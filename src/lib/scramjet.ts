@@ -1,18 +1,13 @@
 let scramjetInitialized = false;
 let initPromise: Promise<void> | null = null;
 
-interface ScramjetConfig {
-  prefix: string;
-  files: {
-    wasm: string;
-    all: string;
-    sync: string;
-  };
-}
-
-interface ScramjetControllerInstance {
-  init(): Promise<void>;
-  encodeUrl(url: string): string;
+declare global {
+  interface Window {
+    __scramjet$bundle?: {
+      rewriters: { url: { encodeUrl(url: string): string } };
+    };
+    BareMux?: { BareMuxConnection: new (path: string) => BareMuxConnectionInstance };
+  }
 }
 
 interface BareMuxConnectionInstance {
@@ -27,52 +22,15 @@ export async function initScramjet(): Promise<void> {
 }
 
 async function doInit(): Promise<void> {
-  await waitForGlobals();
-
-  if (!('serviceWorker' in navigator)) {
-    throw new Error('Service workers are not supported in this browser');
-  }
+  if (!('serviceWorker' in navigator)) throw new Error('Service workers are not supported in this browser');
+  if (!window.__scramjet$bundle || !window.BareMux) throw new Error('Proxy assets are unavailable');
 
   await navigator.serviceWorker.register('/sw.js', { scope: '/' });
   await navigator.serviceWorker.ready;
 
-  const { ScramjetController } = window.$scramjetLoadController!();
-  const controller = new ScramjetController({
-    prefix: '/service/',
-    files: {
-      wasm: '/scram/scramjet.bundle.js',
-      all: '/scram/scramjet.bundle.js',
-      sync: '/scram/scramjet.bundle.js',
-    },
-  });
-
-  window.scramjet = controller;
-  await controller.init();
-
-  const connection = new window.BareMux!.BareMuxConnection('/baremux/worker.js');
-  await connection.setTransport('/epoxy/index.mjs', [
-    { wisp: 'wss://wisp.mercurywork.shop/' },
-  ]);
-
+  const connection = new window.BareMux.BareMuxConnection('/baremux/worker.js');
+  await connection.setTransport('/epoxy/index.mjs', [{ wisp: 'wss://wisp.mercurywork.shop/' }]);
   scramjetInitialized = true;
-}
-
-function waitForGlobals(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(
-      () => reject(new Error('Scramjet scripts failed to load within 15 seconds')),
-      15000,
-    );
-    const check = () => {
-      if (window.$scramjetLoadController && window.BareMux) {
-        clearTimeout(timeout);
-        resolve();
-      } else {
-        requestAnimationFrame(check);
-      }
-    };
-    check();
-  });
 }
 
 export function isScramjetReady(): boolean {
@@ -80,8 +38,7 @@ export function isScramjetReady(): boolean {
 }
 
 export function encodeUrl(url: string): string {
-  if (!window.scramjet) {
-    throw new Error('Scramjet is not initialized');
-  }
-  return window.scramjet.encodeUrl(url);
+  const bundle = window.__scramjet$bundle;
+  if (!bundle) throw new Error('Scramjet is not initialized');
+  return bundle.rewriters.url.encodeUrl(url);
 }
